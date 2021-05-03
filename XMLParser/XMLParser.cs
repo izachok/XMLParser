@@ -2,15 +2,31 @@
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace XMLParser
 {
     class XMLParser
     {
-        public string DirectoryPath { get; set; }
+        private string dirPath = "";
+        public string DirectoryPath
+        {
+            get { return dirPath; }
+            set { if (value.EndsWith("\\"))
+                {
+                    dirPath = value.Substring(0, value.Length - 1);
+                }
+                else
+                {
+                    dirPath = value;
+                }
+            }
+        }
         public string ParentNodeName { get; set; }
         public bool IncludeParentNode { get; set; }
         public string OutputFileName { get; set; }
+
+        private StringBuilder resultXml = new StringBuilder();
 
         public XMLParser(string directoryPath, string parentNodeName, bool includeParentNode, string outputFileName)
         {
@@ -20,18 +36,28 @@ namespace XMLParser
             OutputFileName = outputFileName;
         }
 
-        public void ProcessFilesInDirectory()
+        public void ProcessDirectories()
         {
-            StringBuilder resultXML = new StringBuilder();
+            List<string> directories = new List<string>(Directory.EnumerateDirectories(DirectoryPath));
+            foreach (var directory in directories)
+            {
+                ProcessFilesInDirectory(directory);
+            }
+        }
+
+        public void ProcessFilesInDirectory(string directoryPath)
+        {
+            //StringBuilder resultXML = new StringBuilder();
+            
             try
             {
-                var xmlFiles = Directory.EnumerateFiles(DirectoryPath, "*.xml");
+                var xmlFiles = Directory.EnumerateFiles(directoryPath, "*.xml");
 
                 foreach (string currentFile in xmlFiles)
                 {
-                    resultXML.Append(FindXMLNode(currentFile).Trim()).Append("\n");
+                    resultXml.Append(FindXMLNode(currentFile).Trim()).Append("\n");
                 }
-                SaveXMLToFile(resultXML.ToString());
+                SaveXMLToFile(resultXml.ToString());
             }
             catch (Exception e)
             {
@@ -60,7 +86,10 @@ namespace XMLParser
 
         private void SaveXMLToFile(string xml)
         {
-            
+            if (OutputFileName == "")
+            {
+                OutputFileName = DirectoryPath + "\\output.xml";
+            }
             File.WriteAllText(OutputFileName, xml, Encoding.UTF8);
         }
     }

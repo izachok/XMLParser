@@ -27,17 +27,10 @@ namespace XMLParser
 
             Console.WriteLine("\nEnter output file name with full path:");
             outputFilePath = Console.ReadLine();
-
-            //ProcessFilesInDirectory(@"d:\IT\Code\XMLParser\XMLParser\XML", "HotSpots", 
-            //    true, @"d:\IT\Code\XMLParser\XMLParser\result.xml");
-
-            //XMLParser parser = new XMLParser(@"d:\IT\Code\XMLParser\XMLParser\XML", "Panoramas", 
-            //    true, @"d:\IT\Code\XMLParser\XMLParser\result.xml");
             XMLParser parser = new XMLParser(directoryPath, parentNodeName, includeParentNode, outputFilePath);
-            parser.ProcessFilesInDirectory();
-            //ProcessFilesInDirectory(directoryPath, parentNodeName, includeParentNode, outputFilePath);
+            parser.ProcessDirectories();
             Console.WriteLine("Press any key...");
-            Console.Read();
+            Console.ReadKey();
         }
     }
 }
