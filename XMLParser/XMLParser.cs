@@ -39,6 +39,9 @@ namespace XMLParser
         public void ProcessDirectories()
         {
             List<string> directories = new List<string>(Directory.EnumerateDirectories(DirectoryPath));
+            //search in root directory
+            ProcessFilesInDirectory(DirectoryPath);
+            //search in 1st level subdirectories
             foreach (var directory in directories)
             {
                 ProcessFilesInDirectory(directory);
@@ -69,7 +72,8 @@ namespace XMLParser
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
-            string result = "";
+            StringBuilder result = new StringBuilder();
+            bool notFirst = false;
 
             using (XmlReader reader = XmlReader.Create(fullPath, settings))
             {
@@ -77,11 +81,16 @@ namespace XMLParser
                 {
                     if (reader.IsStartElement(ParentNodeName))
                     {
-                        result = IncludeParentNode ? reader.ReadOuterXml() : reader.ReadInnerXml();
+                        if (notFirst)
+                        {
+                            result.Append("\n");
+                        }
+                        notFirst = true;
+                        result.Append(IncludeParentNode ? reader.ReadOuterXml() : reader.ReadInnerXml().Trim());
                     }
                 }
             }
-            return result;
+            return result.ToString();
         }
 
         private void SaveXMLToFile(string xml)
