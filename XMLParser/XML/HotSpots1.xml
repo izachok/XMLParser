@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<HotSpots>
+	<HotSpot name="NGU - Laboratoriebygg etg 3- Setup 002">
+		<WorldPosition>97359.813,1607782.250,39.019</WorldPosition>
+		<Panorama>NGU - Laboratoriebygg etg 3- Setup 002.dds</Panorama>
+		<PointCloud>NGU - Laboratoriebygg etg 3- Setup 002</PointCloud>
+	</HotSpot>
+</HotSpots>
+<Panoramas>
+	<Panorama name="NGU - Laboratoriebygg etg 3- Setup 002.dds" position="97359.813,1607782.250,39.019" euler="0,0,103.9" />
+</Panoramas>
